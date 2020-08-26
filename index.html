@@ -70,6 +70,7 @@
 
               //**-- Speech to text
               const startBtn = document.querySelector('#start-btn');
+              const resultDiv = document.querySelector('#result-div');
               SpeechRecognition = webkitSpeechRecognition || SpeechRecognition;
               let recognition = new SpeechRecognition();
 
@@ -102,7 +103,7 @@
                               ledB.on();
                           })();
                       }
-                      //resultDiv.innerHTML = interimTranscript + '</i>';//
+                      resultDiv.innerHTML = interimTranscript + '</i>';
                   }
                   garbage_var = interimTranscript.slice(-2);
               }
