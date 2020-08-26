@@ -13,107 +13,28 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://obniz.io/js/jquery-3.2.1.min.js"></script>
     <script src="https://unpkg.com/obniz@latest/obniz.js"></script>
-
-    <div id="obniz-debug"></div>
-    <h1>obniz センサー</h1>
-
-    <div class="container">
-      <div class="row py-5">
-        <div class="col">
-          <button id="start-btn" type="button" class="btn btn-primary btn-lg mx-auto d-block" data_but="btn-xs"><i class='fa '></i>桃</button>
-        </div>
-      </div>
-      <div id="result-div" class="h1 text-center py-5"></div>
-    </div>
-
+    
+    <button id="button">音声入力開始</button>
+    <h1 id="result"></h1>    
     <script>
-      var obnizA = new Obniz("7356-6823");
-      obnizA.onconnect = async function () {
-          var obnizB = new Obniz("5388-8003");
-          obnizB.onconnect = async function() {
-              //-- 外部モジュール接続
-              var ledA = obnizA.wired("LED", {anode:0, cathode:1});
-              var ledB = obnizA.wired("LED", {anode:2, cathode:3});
-              var joystick = obnizB.wired("JoyStick", { gnd: 0, vcc: 1, y: 2, x: 3, sw: 4});
-              //-- メイン --//
+        let button = document.getElementById('button');
+        let speech = new webkitSpeechRecognition();
+        let result = document.getElementById('result');
 
-              //**-- X 軸
-              joystick.onchangex = async function (val) {
-                  if (0.3 <= val && val <= 0.5){
-                      /console.log("X_val = " + val);/
-                      console.log("X_p");
-                      ledA.on();
-                  };
-                  if (-0.5 < val && val < -0.3){
-                      /console.log("X_val = " + val);/
-                      console.log("X_m");
-                      ledA.off();
-                  };
-                  if (0.8 < val) {
-                      console.log("Push...!!");
-                      ledA.off()
-                      ledB.off();
-                  };
-              };
-
-              //**-- Y 軸
-              joystick.onchangey = async function (val) {
-                  if (0.3 < val && val < 0.5){
-                      console.log("Y_p");
-                      ledB.on();
-                  };
-                  if (-0.5 < val && val < -0.3){
-                      console.log("Y_m");
-                      ledB.off();
-                  };
-              };
-
-              //**-- Speech to text
-              const startBtn = document.querySelector('#start-btn');
-              const resultDiv = document.querySelector('#result-div');
-              SpeechRecognition = webkitSpeechRecognition || SpeechRecognition;
-              let recognition = new SpeechRecognition();
-
-              recognition.lang = 'ja-JP';
-              recognition.interimResults = true;
-              recognition.continuous = true;
-
-              let finalTranscript = ''; // 確定した(黒の)認識結果
-              let garbage_var = '';
-
-              recognition.onresult = (event) => {
-                  let interimTranscript = ''; // 暫定(灰色)の認識結果
-                  for (let i = event.resultIndex; i < event.results.length; i++) {
-                      let transcript = event.results[i][0].transcript;
-                      if (event.results[i].isFinal) {
-                          finalTranscript += transcript;
-                      } else {
-                          interimTranscript = transcript;
-                      }
-                  }
-
-                  if (garbage_var == interimTranscript.slice(-2)){
-                  }
-                  else {
-                      console.log(interimTranscript.slice(-2));
-                      if (interimTranscript.slice(-2)=="お尻"){
-                          const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
-                          (async () => {
-                              ledA.on();
-                              ledB.on();
-                          })();
-                      }
-                      resultDiv.innerHTML = interimTranscript + '</i>';
-                  }
-                  garbage_var = interimTranscript.slice(-2);
-                  //*---
-              }
-              startBtn.onclick = () => {
-                  recognition.start();
-              }
-          }
-      }
-
-      </script>
-  </body>
+        button.onclick = () => {
+        speech.start();
+        result.innerHTML = '音声入力を受け付けています、、、、'
+        speech.onresult = function (e) {
+        speech.stop();      
+        if (e.results[0].isFinal) {
+        result.innerHTML = e.results[0][0].transcript;
+    }
+  } 
+}    
+    </script>
+    
+    
+    </body>
+    
+    </head>
 </html>
