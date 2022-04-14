@@ -8,7 +8,7 @@
     "sizes": "180x180",
     "type": "image/png",
     "density": "3.0",
-    "purpose": "any maskable"
+    "purpose": "any maskable",
   }],
-  "display": "standalone"
+  "display": "standalone",
 }
