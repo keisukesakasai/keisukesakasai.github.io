@@ -3,11 +3,11 @@
   "short_name": "Wedding App",
   "scope": "/",
   "start_url": "index.html",
-  "icons": [ {
+  "icons": [{
     "src": "images/icon-180x180.png",
     "sizes": "180x180",
     "type": "image/png",
-    "density": "3.0"
+    "density": "3.0",
     "purpose": "any maskable"
   }],
   "display": "standalone"
